@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZIP 下载站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <nav class="topbar">
+        <div class="brand">
+          <span class="brand-mark">ZIP</span>
+          <div>
+            <p class="brand-title">ZIP 下载站</p>
+            <p class="brand-subtitle">只下载代码里现成的 ZIP 文件</p>
+          </div>
+        </div>
+        <a class="button ghost" href="#library">查看下载区</a>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">STATIC ZIP LIBRARY</p>
+          <h1>网站上的下载按钮，只会下载项目里已经存在的 ZIP</h1>
+          <p class="hero-text">
+            这个版本不再支持上传。页面只展示代码目录里预先准备好的 ZIP 文件，
+            点击按钮时会直接下载对应的静态压缩包，适合做固定资源下载页。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#library">立即下载</a>
+            <a class="button ghost" href="#guide">如何添加更多 ZIP</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <article class="feature-card accent">
+            <span>下载来源</span>
+            <strong>仅限代码目录中的现成 ZIP</strong>
+          </article>
+          <article class="feature-card">
+            <span>当前模式</span>
+            <strong>不支持上传，不支持删除</strong>
+          </article>
+          <article class="feature-card">
+            <span>适用场景</span>
+            <strong>固定资源、模板包、安装包下载</strong>
+          </article>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="uploader-section" id="overview">
+        <div class="section-heading">
+          <p class="eyebrow">RESOURCE MODE</p>
+          <h2>静态 ZIP 资源说明</h2>
+        </div>
+
+        <div class="uploader-card">
+          <div class="dropzone is-static">
+            <span class="drop-kicker">当前资源目录</span>
+            <strong>zip-download-site/downloads</strong>
+            <p>只有放在这个目录里的 ZIP，并且写进代码配置后，才会出现在下载列表里。</p>
+          </div>
+
+          <div class="import-side">
+            <div class="mini-card">
+              <span>资源模式</span>
+              <strong>静态下载</strong>
+            </div>
+            <div class="mini-card">
+              <span>当前资源数</span>
+              <strong id="package-count">0</strong>
+            </div>
+            <div class="mini-card">
+              <span>总容量</span>
+              <strong id="package-size">0 B</strong>
+            </div>
+          </div>
+        </div>
+
+        <p class="status-banner" id="status-banner">页面只会提供代码中预设 ZIP 的下载按钮。</p>
+      </section>
+
+      <section class="library-section" id="library">
+        <div class="section-heading">
+          <p class="eyebrow">DOWNLOAD LIBRARY</p>
+          <h2>内置 ZIP 下载列表</h2>
+        </div>
+
+        <div class="toolbar">
+          <label class="field">
+            <span>搜索文件</span>
+            <input id="search-input" type="text" placeholder="输入 ZIP 文件名">
+          </label>
+
+          <label class="field">
+            <span>排序方式</span>
+            <select id="sort-select">
+              <option value="latest">按更新时间</option>
+              <option value="name">按文件名称</option>
+              <option value="size">按文件大小</option>
+            </select>
+          </label>
+        </div>
+
+        <section class="stats-grid" aria-label="资源统计">
+          <article class="stat-card">
+            <span>ZIP 文件</span>
+            <strong id="stat-files">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>筛选结果</span>
+            <strong id="stat-visible">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>资源来源</span>
+            <strong>Static Files</strong>
+          </article>
+        </section>
+
+        <section class="package-grid" id="package-grid" aria-live="polite"></section>
+      </section>
+
+      <section class="guide-section" id="guide">
+        <div class="section-heading">
+          <p class="eyebrow">HOW TO ADD MORE</p>
+          <h2>怎么继续添加 ZIP</h2>
+        </div>
+
+        <div class="guide-grid">
+          <article class="guide-card">
+            <span>1</span>
+            <h3>放入目录</h3>
+            <p>把新的 ZIP 文件放进 <code>downloads</code> 文件夹。</p>
+          </article>
+          <article class="guide-card">
+            <span>2</span>
+            <h3>登记到代码</h3>
+            <p>在 <code>script.js</code> 的 <code>AVAILABLE_PACKAGES</code> 数组里新增一项。</p>
+          </article>
+          <article class="guide-card">
+            <span>3</span>
+            <h3>自动显示按钮</h3>
+            <p>刷新页面后就会出现新的下载卡片和下载按钮。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="package-card-template">
+    <article class="package-card">
+      <div class="package-top">
+        <span class="zip-badge">ZIP</span>
+        <span class="package-date"></span>
+      </div>
+      <h3 class="package-name"></h3>
+      <p class="package-meta"></p>
+      <div class="package-actions">
+        <a class="button primary download-button" download>下载 ZIP</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
