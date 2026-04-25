@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZIP 上传下载站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>小贴士：一定要下载starter-pack.zip，里面有我录的上传教程</h1>
+  <h1>当前版本：V1.20</h1>
+  <div class="page-shell">
+    <header class="hero">
+      <nav class="topbar">
+        <div class="brand">
+          <span class="brand-mark">ZIP</span>
+          <div>
+            <p class="brand-title">ZIP 上传下载站</p>
+            <p class="brand-subtitle">上传 ZIP 后，访问这个站点的人都能看到并下载</p>
+          </div>
+        </div>
+        <a class="button ghost" href="#library">查看公开资源</a>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PUBLIC ZIP HOSTING</p>
+          <h1>上传 ZIP 到网站服务器，生成公开下载入口</h1>
+          <p class="hero-text">
+            这个版本带有后端服务。ZIP 上传后会保存到服务器的 <code>downloads</code> 目录，
+            并自动出现在公开资源列表里。任何能访问这个网站的人，都能看到并下载这些 ZIP。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#upload">立即上传</a>
+            <a class="button ghost" href="#library">查看资源库</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <article class="feature-card accent">
+            <span>公开可见</span>
+            <strong>上传成功后会进入所有访客共享的公开列表</strong>
+          </article>
+          <article class="feature-card">
+            <span>统一存储</span>
+            <strong>ZIP 会写入服务器上的 downloads 目录</strong>
+          </article>
+          <article class="feature-card">
+            <span>直接下载</span>
+            <strong>每个资源都会自动生成下载按钮</strong>
+          </article>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="uploader-section" id="upload">
+        <div class="section-heading">
+          <p class="eyebrow">UPLOAD PANEL</p>
+          <h2>上传公开 ZIP</h2>
+        </div>
+
+        <div class="uploader-card">
+          <form class="upload-form" id="upload-form">
+            <label class="field">
+              <span>资源标题</span>
+              <input id="package-title" type="text" maxlength="80" placeholder="例如：Unity 插件包 / 游戏资源包" required>
+            </label>
+
+            <label class="field">
+              <span>资源简介</span>
+              <textarea id="package-summary" rows="4" maxlength="200" placeholder="简单说明这个 ZIP 是什么，别人下载后能得到什么。"></textarea>
+            </label>
+
+            <label class="field">
+              <span>选择 ZIP 文件</span>
+              <input id="zip-input" type="file" accept=".zip,application/zip" required>
+            </label>
+
+            <div class="form-actions">
+              <button class="button primary" id="upload-button" type="submit">上传并公开</button>
+              <span class="form-tip">只允许上传 ZIP，上传后会进入公开列表。</span>
+            </div>
+          </form>
+
+          <div class="import-side">
+            <div class="mini-card">
+              <span>资源模式</span>
+              <strong>公开上传</strong>
+            </div>
+            <div class="mini-card">
+              <span>当前资源数</span>
+              <strong id="package-count">0</strong>
+            </div>
+            <div class="mini-card">
+              <span>总容量</span>
+              <strong id="package-size">0 B</strong>
+            </div>
+            <div class="mini-card">
+              <span>最近上传</span>
+              <strong id="latest-upload">暂无</strong>
+            </div>
+          </div>
+        </div>
+
+        <p class="status-banner" id="status-banner">准备就绪，等待上传公开 ZIP。</p>
+      </section>
+
+      <section class="library-section" id="library">
+        <div class="section-heading">
+          <p class="eyebrow">PUBLIC DOWNLOAD LIBRARY</p>
+          <h2>公开 ZIP 资源库</h2>
+        </div>
+
+        <div class="toolbar">
+          <label class="field">
+            <span>搜索文件</span>
+            <input id="search-input" type="text" placeholder="输入资源标题或 ZIP 文件名">
+          </label>
+
+          <label class="field">
+            <span>排序方式</span>
+            <select id="sort-select">
+              <option value="latest">按最新上传</option>
+              <option value="name">按名称</option>
+              <option value="size">按大小</option>
+            </select>
+          </label>
+        </div>
+
+        <section class="stats-grid" aria-label="资源统计">
+          <article class="stat-card">
+            <span>ZIP 文件</span>
+            <strong id="stat-files">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>筛选结果</span>
+            <strong id="stat-visible">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>共享模式</span>
+            <strong>Public</strong>
+          </article>
+        </section>
+
+        <section class="package-grid" id="package-grid" aria-live="polite"></section>
+      </section>
+
+      <section class="guide-section" id="guide">
+        <div class="section-heading">
+          <p class="eyebrow">HOW IT WORKS</p>
+          <h2>运行说明</h2>
+        </div>
+
+        <div class="guide-grid">
+          <article class="guide-card">
+            <span>1</span>
+            <h3>启动服务</h3>
+            <p>用 <code>node server.js</code> 启动站点，而不是直接双击 HTML。</p>
+          </article>
+          <article class="guide-card">
+            <span>2</span>
+            <h3>上传 ZIP</h3>
+            <p>在上传区填写标题、简介并选择 ZIP，提交后会写入服务器。</p>
+          </article>
+          <article class="guide-card">
+            <span>3</span>
+            <h3>公开下载</h3>
+            <p>任何能访问这个站点地址的人，都能在列表里看到并下载这些 ZIP。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="package-card-template">
+    <article class="package-card">
+      <div class="package-top">
+        <span class="zip-badge">ZIP</span>
+        <span class="package-date"></span>
+      </div>
+      <h3 class="package-name"></h3>
+      <p class="package-meta"></p>
+      <div class="package-actions">
+        <a class="button primary download-button" download>下载 ZIP</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
