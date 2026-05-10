@@ -1,0 +1,9 @@
+﻿{
+  "name": "zip-download-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public ZIP upload and download site",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
