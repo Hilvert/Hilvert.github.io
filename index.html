@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f1020">
+  <meta name="description" content="一个支持本地文件和音频链接的在线音乐播放站。">
+  <title>音轨播放站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <nav class="topbar">
+        <div class="brand">
+          <span class="brand-mark">PLAY</span>
+          <div>
+            <p class="brand-title">音轨播放站</p>
+            <p class="brand-subtitle">把本地音乐或链接直接放进浏览器，马上播放。</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <a class="button ghost" href="#import">导入音乐</a>
+          <a class="button primary" href="#player">打开播放器</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">MUSIC PLAYER</p>
+          <h3>把浏览器变成你的随身歌单</h3>
+          <p class="hero-text">
+            支持拖拽导入本地音频，也能粘贴可播放的音频链接。播放、切歌、随机、循环、搜索和音量控制都在一个页面里完成。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#import">开始导入</a>
+            <a class="button ghost" href="#library">查看歌单</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel">
+          <article class="feature-card accent">
+            <span>当前播放</span>
+            <strong id="hero-current-track">尚未选择歌曲</strong>
+            <p id="hero-current-meta">导入一首歌后就会显示在这里。</p>
+          </article>
+          <article class="feature-card">
+            <span>播放列表</span>
+            <strong id="hero-track-count">0 首</strong>
+            <p>本地文件和音频链接都能加入歌单。</p>
+          </article>
+          <article class="wave-card">
+            <div class="wave-bars" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p>播放开始后，波形会跟着亮起来。</p>
+          </article>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="section" id="import">
+        <div class="section-heading">
+          <p class="eyebrow">IMPORT</p>
+          <h2>导入音乐</h2>
+        </div>
+
+        <div class="import-grid">
+          <article class="panel import-card">
+            <div class="card-heading">
+              <p class="eyebrow">LOCAL FILES</p>
+              <h3>导入本地音乐</h3>
+            </div>
+            <div class="dropzone" id="dropzone">
+              <p class="dropzone-title">拖拽音频到这里，或者点按钮选择文件</p>
+              <p class="dropzone-copy">支持 MP3、WAV、OGG、M4A、AAC、FLAC、WEBM 等格式。</p>
+              <button class="button primary" id="pick-files-button" type="button">选择音乐文件</button>
+              <span class="form-tip">本地文件只保留在当前浏览器会话中，刷新后需要重新导入。</span>
+            </div>
+          </article>
+
+          <form class="panel import-card" id="link-form">
+            <div class="card-heading">
+              <p class="eyebrow">AUDIO URL</p>
+              <h3>添加音频链接</h3>
+            </div>
+
+            <label class="field">
+              <span>音频链接</span>
+              <input id="track-url" type="url" placeholder="https://example.com/song.mp3" required>
+            </label>
+
+            <label class="field">
+              <span>歌曲标题</span>
+              <input id="track-title" type="text" maxlength="80" placeholder="留空会自动从链接里提取">
+            </label>
+
+            <label class="field">
+              <span>歌手 / 来源</span>
+              <input id="track-artist" type="text" maxlength="60" placeholder="可填歌手名、频道名或来源">
+            </label>
+
+            <div class="form-actions">
+              <button class="button primary" type="submit">添加到歌单</button>
+              <p class="form-tip">如果链接允许跨域播放，就能直接在浏览器里播放。</p>
+            </div>
+          </form>
+        </div>
+
+        <p class="status-banner" id="status-banner" role="status" aria-live="polite">准备就绪，等待导入音乐。</p>
+      </section>
+
+      <section class="section" id="player">
+        <div class="section-heading">
+          <p class="eyebrow">NOW PLAYING</p>
+          <h2>播放器</h2>
+        </div>
+
+        <div class="player-layout">
+          <article class="panel player-card" id="player-card">
+            <div class="player-art">
+              <div class="art-visual">
+                <span class="art-label">ON AIR</span>
+                <div class="art-bars" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="player-meta">
+              <p class="track-source" id="current-source">等待导入</p>
+              <h3 id="current-title">尚未选择歌曲</h3>
+              <p class="track-artist" id="current-artist">导入一首歌曲开始播放。</p>
+            </div>
+
+            <div class="player-controls" aria-label="播放控制">
+              <button class="button ghost control-button" id="shuffle-button" type="button">随机：关</button>
+              <button class="button ghost control-button" id="prev-button" type="button">上一首</button>
+              <button class="button primary control-button play-button" id="play-button" type="button">播放</button>
+              <button class="button ghost control-button" id="next-button" type="button">下一首</button>
+              <button class="button ghost control-button" id="repeat-button" type="button">循环：列</button>
+            </div>
+
+            <div class="progress-group">
+              <div class="time-row">
+                <span id="current-time">0:00</span>
+                <span id="duration">0:00</span>
+              </div>
+              <input id="progress-range" type="range" min="0" max="1000" value="0" aria-label="播放进度">
+            </div>
+
+            <div class="volume-group">
+              <label for="volume-range">音量</label>
+              <input id="volume-range" type="range" min="0" max="100" value="80" aria-label="音量">
+              <button class="button ghost control-button" id="mute-button" type="button">静音</button>
+            </div>
+          </article>
+
+          <aside class="panel library-card" id="library">
+            <div class="toolbar">
+              <label class="field">
+                <span>搜索歌曲</span>
+                <input id="search-input" type="search" placeholder="输入标题、歌手或来源">
+              </label>
+
+              <label class="field">
+                <span>排序方式</span>
+                <select id="sort-select">
+                  <option value="newest">按最新加入</option>
+                  <option value="title">按名称</option>
+                  <option value="duration">按时长</option>
+                </select>
+              </label>
+            </div>
+
+            <section class="stats-grid" aria-label="歌单统计">
+              <article class="stat-card">
+                <span>歌曲总数</span>
+                <strong id="stat-files">0</strong>
+              </article>
+              <article class="stat-card">
+                <span>筛选结果</span>
+                <strong id="stat-visible">0</strong>
+              </article>
+              <article class="stat-card">
+                <span>总时长</span>
+                <strong id="stat-duration">0:00</strong>
+              </article>
+              <article class="stat-card">
+                <span>播放状态</span>
+                <strong id="stat-state">未开始</strong>
+              </article>
+            </section>
+
+            <section class="playlist" id="playlist" aria-live="polite"></section>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <input id="audio-input" type="file" accept="audio/*" multiple hidden>
+  <audio id="audio-player" preload="metadata"></audio>
+
+  <template id="track-template">
+    <article class="track-item">
+      <button class="button ghost track-toggle" type="button">播放</button>
+      <div class="track-content">
+        <div class="track-head">
+          <h3 class="track-title"></h3>
+          <span class="track-duration"></span>
+        </div>
+        <p class="track-artist"></p>
+        <div class="track-tags">
+          <span class="chip source-chip"></span>
+          <span class="chip format-chip"></span>
+        </div>
+      </div>
+      <button class="button ghost track-remove" type="button">移除</button>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
